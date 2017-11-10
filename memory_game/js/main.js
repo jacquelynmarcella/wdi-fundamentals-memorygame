@@ -29,13 +29,26 @@ var score = 0;
 var matchOutput = document.getElementById('match-output');
 var scoreOutput = document.getElementById('score-output');
 
+// Define buttons for reseting and creating a new game
+
+var resetButton = document.getElementById('reset-game');
+var newGameButton = document.getElementById('new-game');
+
+
+// When user wins the game, make the shuffle button disappear and emphasize the new game button
+
+var gameOver = function () {
+	resetButton.className = 'gameover';
+	newGameButton.className = 'suggestnewgame';
+}
 
 // Check score to see if the user has won game and if so, let them know they won
 
 var checkForWin = function () {
 	if (score >= 40) {
 		console.log("User has won the game! Current score is " + score);
-		matchOutput.textContent = "You win! New game?";
+		matchOutput.textContent = "You won! New game?";
+		gameOver();
 	}
 	else {
 		console.log("User has current score of " + score)
@@ -57,13 +70,13 @@ var checkForMatch = function () {
 	if (cardsInPlay[0] === cardsInPlay[1]) {
 		score += 10;
 		scoreOutput.textContent = score;
-		matchOutput.textContent = "You found a match! Shuffle deck to keep playing";
+		matchOutput.textContent = "You found a match!";
 		console.log("User found a match");
 		checkForWin();
 	} else {
 		score -= 5;
 		scoreOutput.textContent = score;
-		matchOutput.textContent = "Sorry, no match! Shuffle deck to try again";
+		matchOutput.textContent = "Sorry, try again";
 		console.log("User did not find a match");
 		checkForWin();
 		noBelowZero();
@@ -101,12 +114,6 @@ var createBoard = function () {
 	
 };
 
-// Define buttons for reseting and creating a new game
-
-var resetButton = document.getElementById('reset-game');
-var newGameButton = document.getElementById('new-game');
-
-
 // Function that clears old board and shuffles the boards for a new round, but not a new game
 
 var resetBoard = function () {
@@ -124,16 +131,18 @@ var resetBoard = function () {
 var newGame = function () {
 	cardsInPlay = [];
 	score = 0;
-	matchOutput.textContent = "You have started a new game";
-	scoreOutput.textContent = score;
 	for (var i = 0; i < cards.length; i++) {
 		document.getElementById('game-board').innerHTML = '<p></p>';
 	}
 	createBoard();
+	resetButton.className = 'gameon';
+	newGameButton.className = 'subtlenewgame';
 	console.log("User started new game");
+	matchOutput.textContent = "You have started a new game";
+	scoreOutput.textContent = score;
 }
 
-// Listeners to call the functions to eithe shuffle or reset game
+// Listeners to call the functions to either shuffle or reset game
 
 resetButton.addEventListener('click', resetBoard);
 newGameButton.addEventListener('click', newGame);

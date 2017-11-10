@@ -61,7 +61,7 @@ nav a {
 
 p {
 	font-family: "Droid Serif", serif;
-	line-height: 26px;
+	line-height: 30px;
 	font-size: 16px;
 	color: #0D2C40;
 }
@@ -69,7 +69,7 @@ p {
 li {
 	font-family: "Droid Serif", serif;
 	line-height: 30px;
-	font-size: 20px;
+	font-size: 16px;
 	text-align: center;
 	list-style-position: inside;
 	list-style-type: square;
@@ -82,19 +82,14 @@ img {
 
 
 #instructions {
-	margin: 20px auto -20px auto;
+	margin: 40px auto -10px auto;
 }
 
 #game-status {
 	background: #F15B31;
-	width: 730px;
-	padding: 20px;
-	margin: 20px auto;
-}
-
-#game-status p {
-	height: 2em;
-	padding: 10px;
+	width: 720px;
+	padding: 30px ;
+	margin: 40px auto 60px auto;
 }
 
 #match-output {
@@ -120,7 +115,7 @@ img {
 	font-size: 60px;
 }
 
-#reset-game {
+.gameon {
 	font-family: "Raleway", sans-serif;
 	font-weight: 500;
 	font-size: 20px;
@@ -133,7 +128,11 @@ img {
 	height: 100px;
 }
 
-#new-game {
+.gameover {
+	display: none;
+}
+
+.subtlenewgame {
 	font-family: "Raleway", sans-serif;
 	font-weight: 200;
 	font-size: 20px;
@@ -142,6 +141,19 @@ img {
 	color: white;
 	padding: 10px;
 	margin: 10px auto 0px auto;
+	width: 130px;
+	height: 100px;
+}
+
+.suggestnewgame {
+	font-family: "Raleway", sans-serif;
+	font-weight: 500;
+	font-size: 20px;
+	border: 5px solid white;
+	background-color: #00A6B3;
+	color: white;
+	padding: 10px;
+	margin: 105px auto 10px auto;
 	width: 130px;
 	height: 100px;
 }
