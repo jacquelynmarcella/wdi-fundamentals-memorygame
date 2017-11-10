@@ -22,19 +22,58 @@ var cards = [
 ];
 
 var cardsInPlay = [];
+var score = 0;
+
+// Define variables we can reference in the code to keep the user informed of their score
+
+var matchOutput = document.getElementById('match-output');
+var scoreOutput = document.getElementById('score-output');
+
+
+// Check score to see if the user has won game and if so, let them know they won
+
+var checkForWin = function () {
+	if (score >= 40) {
+		console.log("User has won the game! Current score is " + score);
+		matchOutput.textContent = "You win! New game?";
+	}
+	else {
+		console.log("User has current score of " + score)
+	}
+}
+
+// To be nice and not let people get deep into the negatives
+
+var noBelowZero = function () {
+	if (score < 0) {
+		score = 0;
+		scoreOutput.textContent = score;
+	}
+}
+
+// Check to see if cards match and update score accordingly, as well as notify user of match
 
 var checkForMatch = function () {
 	if (cardsInPlay[0] === cardsInPlay[1]) {
-		alert("You found a match!");
+		score += 10;
+		scoreOutput.textContent = score;
+		matchOutput.textContent = "You found a match! Shuffle deck to keep playing";
+		console.log("User found a match");
+		checkForWin();
 	} else {
-		alert("Sorry try again");
+		score -= 5;
+		scoreOutput.textContent = score;
+		matchOutput.textContent = "Sorry, no match! Shuffle deck to try again";
+		console.log("User did not find a match");
+		checkForWin();
+		noBelowZero();
 	}
 };
+
 
 var flipCard = function () {
 	var cardId = this.getAttribute('data-id');
 	cardsInPlay.push(cards[cardId].rank);
-
 	console.log("User flipped " + cards[cardId].rank);
 	console.log(cards[cardId].cardImage);
 	console.log(cards[cardId].suit);
@@ -53,9 +92,60 @@ var createBoard = function () {
 		cardElement.setAttribute('data-id', i);
 		cardElement.addEventListener('click', flipCard);
 		document.getElementById('game-board').appendChild(cardElement);
+
+		// Randomizes the card array
+
+		cards.sort(function() 
+			{return 0.5 - Math.random()});
 	}
 	
+};
+
+// Define buttons for reseting and creating a new game
+
+var resetButton = document.getElementById('reset-game');
+var newGameButton = document.getElementById('new-game');
+
+
+// Function that clears old board and shuffles the boards for a new round, but not a new game
+
+var resetBoard = function () {
+	cardsInPlay = [];
+	for (var i = 0; i < cards.length; i++) {
+		document.getElementById('game-board').innerHTML = '<p></p>';
+	}
+	matchOutput.textContent = "Deck shuffled";
+	createBoard();
+	console.log("User shuffled deck");
 }
 
+// Function that resets board and score for an entirely new game
+
+var newGame = function () {
+	cardsInPlay = [];
+	score = 0;
+	matchOutput.textContent = "You have started a new game";
+	scoreOutput.textContent = score;
+	for (var i = 0; i < cards.length; i++) {
+		document.getElementById('game-board').innerHTML = '<p></p>';
+	}
+	createBoard();
+	console.log("User started new game");
+}
+
+// Listeners to call the functions to eithe shuffle or reset game
+
+resetButton.addEventListener('click', resetBoard);
+newGameButton.addEventListener('click', newGame);
+
+
 createBoard();
-	
+
+
+
+
+
+
+
+
+
