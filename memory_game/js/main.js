@@ -21,7 +21,11 @@ var cards = [
 }
 ];
 
+// Defining key variables and arrays, including card images in play to close to the loophole where the user could
+// click on the same card twice and win
+
 var cardsInPlay = [];
+var cardImagesInPlay = [];
 var score = 0;
 
 // Define variables we can reference in the code to keep the user informed of their score
@@ -67,7 +71,19 @@ var noBelowZero = function () {
 // Check to see if cards match and update score accordingly, as well as notify user of match
 
 var checkForMatch = function () {
-	if (cardsInPlay[0] === cardsInPlay[1]) {
+
+	// Closing loophole so that clicking the same card twice doesn't let you win
+
+	if (cardImagesInPlay[0] === cardImagesInPlay[1]) {
+		matchOutput.textContent = "You must select a different card";
+		console.log("User clicked same card twice");
+		cardsInPlay.pop();
+		cardImagesInPlay.pop();
+	}
+
+	// Otherwise, proceed with checking for match as usual
+
+	else if (cardsInPlay[0] === cardsInPlay[1]) {
 		score += 10;
 		scoreOutput.textContent = score;
 		matchOutput.textContent = "You found a match!";
@@ -78,8 +94,8 @@ var checkForMatch = function () {
 		scoreOutput.textContent = score;
 		matchOutput.textContent = "Sorry, try again";
 		console.log("User did not find a match");
-		checkForWin();
 		noBelowZero();
+		checkForWin();
 	}
 };
 
@@ -87,6 +103,7 @@ var checkForMatch = function () {
 var flipCard = function () {
 	var cardId = this.getAttribute('data-id');
 	cardsInPlay.push(cards[cardId].rank);
+	cardImagesInPlay.push(cards[cardId].cardImage);
 	console.log("User flipped " + cards[cardId].rank);
 	console.log(cards[cardId].cardImage);
 	console.log(cards[cardId].suit);
@@ -98,6 +115,7 @@ var flipCard = function () {
 	}
 }
 
+
 var createBoard = function () {
 	for (var i = 0; i < cards.length; i++) {
 		var cardElement = document.createElement('img');
@@ -106,40 +124,41 @@ var createBoard = function () {
 		cardElement.addEventListener('click', flipCard);
 		document.getElementById('game-board').appendChild(cardElement);
 
-		// Randomizes the card array
+		// Randomizes the card array with each new round or game
 
 		cards.sort(function() 
 			{return 0.5 - Math.random()});
 	}
-	
 };
 
-// Function that clears old board and shuffles the boards for a new round, but not a new game
+// Function that clears old board and shuffles the board for a new round, but not a new game
 
 var resetBoard = function () {
 	cardsInPlay = [];
+	cardImagesInPlay = [];
 	for (var i = 0; i < cards.length; i++) {
 		document.getElementById('game-board').innerHTML = '<p></p>';
 	}
 	matchOutput.textContent = "Deck shuffled";
-	createBoard();
 	console.log("User shuffled deck");
+	createBoard();
 }
 
 // Function that resets board and score for an entirely new game
 
 var newGame = function () {
 	cardsInPlay = [];
+	cardImagesInPlay = [];
 	score = 0;
 	for (var i = 0; i < cards.length; i++) {
 		document.getElementById('game-board').innerHTML = '<p></p>';
 	}
-	createBoard();
-	resetButton.className = 'gameon';
-	newGameButton.className = 'subtlenewgame';
 	console.log("User started new game");
 	matchOutput.textContent = "You have started a new game";
 	scoreOutput.textContent = score;
+	resetButton.className = 'gameon';
+	newGameButton.className = 'subtlenewgame';
+	createBoard();
 }
 
 // Listeners to call the functions to either shuffle or reset game
